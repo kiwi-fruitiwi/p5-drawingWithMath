@@ -18,28 +18,44 @@ function preload() {
 
 function displayEnterGlyph() {
     translate(width/2, height/2)
+
+    /* add red dot at origin */
     stroke(0, 100, 100)
     strokeWeight(4)
     point(0, 0)
 
     const WIDTH = 64
+    display1x2Grid(WIDTH)
+
+    /* draw return character */
+
+
+    /* draw arrowhead */
+}
+
+
+/**
+ * displays a 1x2 block of 4x4 grid squares per block
+ * @param w the width of the grid
+ */
+function display1x2Grid(w) {
     /* base: 4x4 grid in each square; draw 1x2 grid */
     stroke(0, 0, 100, 30)
     strokeWeight(0.5)
 
     /* horizontal grid lines */
     for (let i=0; i<9; i++) {
-        let verticalOffset = i * WIDTH/4
-        line(0, -verticalOffset, WIDTH,-verticalOffset)
+        let verticalOffset = i * w/4
+        line(0, -verticalOffset, w,-verticalOffset)
     }
 
     /* vertical grid lines */
     for (let i=0; i<5; i++) {
-        let horizontalOffset = i * WIDTH/4
-        line(horizontalOffset, 0, horizontalOffset, -2*WIDTH)
+        let horizontalOffset = i * w/4
+        line(horizontalOffset, 0, horizontalOffset, -2*w)
     }
-
 }
+
 
 function setup() {
     let cnv = createCanvas(600, 300)
