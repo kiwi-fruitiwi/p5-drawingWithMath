@@ -27,7 +27,39 @@ function scene_return() {
     const WIDTH = 96
     const cursor = new p5.Vector(0, 0)
     display1x2Grid(WIDTH)
-    drawReturnGlyph(cursor, WIDTH)
+    // drawReturnGlyph(cursor, WIDTH)
+    // drawReturnShape(cursor, WIDTH)
+    drawReturnHybrid(cursor, WIDTH)
+}
+
+
+function drawReturnHybrid(cursor, w) {
+    /* draw return character with a combination of beginShape and triangle */
+    stroke(0, 0, 100, 70)
+    strokeWeight(7)
+    strokeJoin(ROUND)
+
+    const x = cursor.x
+    const y = cursor.y
+    const h = w*2 /* draw in a 1x2 block, so 2w=h */
+    const r = w/6 /* 'height' from arrowhead base to its point */
+
+    const stemTop = new p5.Vector(x+3/4*w, y-7/8*h)
+    const stemBottom = new p5.Vector(x+3/4*w, y-1/4*h)
+    const arrowheadTip = new p5.Vector(x+w/4, y-h/4)
+
+    triangle( /* arrowhead */
+        arrowheadTip.x, arrowheadTip.y, /* point tip */
+        arrowheadTip.x+r, arrowheadTip.y + r/sqrt(3),
+        arrowheadTip.x+r, arrowheadTip.y - r/sqrt(3)
+    )
+
+    noFill()
+    beginShape()
+    vertex(stemTop.x, stemTop.y)
+    vertex(stemBottom.x, stemBottom.y)
+    vertex(arrowheadTip.x+r, arrowheadTip.y)
+    endShape()
 }
 
 
@@ -42,23 +74,49 @@ function drawReturnGlyph(cursor, w) {
     const h = w*2 /* draw in a 1x2 block, so 2w=h */
     const r = w/6 /* 'height' from arrowhead base to its point */
 
-    line(x+3/4*w, y-7/8*h, x+3/4*w, y-1/4*h) /* vertical stem */
+    const stemTop = new p5.Vector(x+3/4*w, y-7/8*h)
+    const stemBottom = new p5.Vector(x+3/4*w, y-1/4*h)
+    line(stemTop.x, stemTop.y, stemBottom.x, stemBottom.y) /* vertical stem */
 
-    const triangleMid_y = y-h/4
-    const arrowheadTip_x = x+w/4
+    const arrowheadTip = new p5.Vector(x+w/4, y-h/4)
     triangle( /* arrowhead */
-        arrowheadTip_x, triangleMid_y, /* point tip */
-        arrowheadTip_x+r, triangleMid_y + r/sqrt(3),
-        arrowheadTip_x+r, triangleMid_y - r/sqrt(3)
+        arrowheadTip.x, arrowheadTip.y, /* point tip */
+        arrowheadTip.x+r, arrowheadTip.y + r/sqrt(3),
+        arrowheadTip.x+r, arrowheadTip.y - r/sqrt(3)
     )
 
     /* horizontal segment connecting stem to arrowhead */
-    line(arrowheadTip_x+r, triangleMid_y, x+3/4*w, y-1/4*h)
+    line(arrowheadTip.x+r, arrowheadTip.y, stemBottom.x, stemBottom.y)
 }
 
 
 function drawReturnShape(cursor, w) {
+    stroke(0, 0, 100, 70)
+    strokeWeight(4)
+    strokeJoin(ROUND)
 
+    const x = cursor.x
+    const y = cursor.y
+    const h = w*2 /* draw in a 1x2 block, so 2w=h */
+    const r = w/6 /* 'height' from arrowhead base to its point */
+
+    const stemTop = new p5.Vector(x+3/4*w, y-7/8*h)
+    const stemBottom = new p5.Vector(x+3/4*w, y-1/4*h)
+    const arrowheadTip = new p5.Vector(x+w/4, y-h/4)
+
+    noFill()
+    beginShape()
+    vertex(stemTop.x, stemTop.y)
+    vertex(stemBottom.x, stemBottom.y)
+    vertex(arrowheadTip.x+r, arrowheadTip.y)
+    endShape()
+
+    fill(0, 0, 100, 70)
+    beginShape()
+    vertex(arrowheadTip.x+r, arrowheadTip.y - r/sqrt(3))
+    vertex(arrowheadTip.x, arrowheadTip.y) /* point tip */
+    vertex(arrowheadTip.x+r, arrowheadTip.y + r/sqrt(3))
+    endShape()
 }
 
 
