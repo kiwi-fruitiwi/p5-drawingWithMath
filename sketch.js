@@ -16,21 +16,49 @@ function preload() {
 }
 
 
-function displayEnterGlyph() {
-    translate(width/2, height/2)
+function scene_return() {
+    translate(width/2, height*3/4)
 
     /* add red dot at origin */
     stroke(0, 100, 100)
-    strokeWeight(4)
+    strokeWeight(5)
     point(0, 0)
 
-    const WIDTH = 64
+    const WIDTH = 96
+    const cursor = new p5.Vector(0, 0)
     display1x2Grid(WIDTH)
+    drawReturnGlyph(cursor, WIDTH)
+}
 
+
+function drawReturnGlyph(cursor, w) {
     /* draw return character */
+    stroke(0, 0, 100, 70)
+    strokeWeight(7)
+    strokeJoin(ROUND)
+
+    const x = cursor.x
+    const y = cursor.y
+    const h = w*2 /* draw in a 1x2 block, so 2w=h */
+    const r = w/6 /* 'height' from arrowhead base to its point */
+
+    line(x+3/4*w, y-7/8*h, x+3/4*w, y-1/4*h) /* vertical stem */
+
+    const triangleMid_y = y-h/4
+    const arrowheadTip_x = x+w/4
+    triangle( /* arrowhead */
+        arrowheadTip_x, triangleMid_y, /* point tip */
+        arrowheadTip_x+r, triangleMid_y + r/sqrt(3),
+        arrowheadTip_x+r, triangleMid_y - r/sqrt(3)
+    )
+
+    /* horizontal segment connecting stem to arrowhead */
+    line(arrowheadTip_x+r, triangleMid_y, x+3/4*w, y-1/4*h)
+}
 
 
-    /* draw arrowhead */
+function drawReturnShape(cursor, w) {
+
 }
 
 
@@ -61,6 +89,7 @@ function setup() {
     let cnv = createCanvas(600, 300)
     cnv.parent('#canvas')
     colorMode(HSB, 360, 100, 100, 100)
+    background(234, 34, 24)
     textFont(font, 14)
 
     /* initialize instruction div */
@@ -70,7 +99,7 @@ function setup() {
         [2] undef
         z → freeze sketch</pre>`)
 
-    displayEnterGlyph()
+    scene_return()
     displayDebugCorner()
 }
 
