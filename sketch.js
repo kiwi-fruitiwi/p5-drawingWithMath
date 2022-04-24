@@ -2,7 +2,7 @@
  *  @author kiwi
  *  @date 2022.04.21
  *
- *  ☐ magicalTyperc 'return' drawing
+ *  ☒ magicalTyperc 'return' drawing
  *  ☐ dialogSystem.textFrame
  *  ☐ hackBot-9S
  */
@@ -26,7 +26,7 @@ function scene_return() {
 
     const WIDTH = 96
     const cursor = new p5.Vector(0, 0)
-    display1x2Grid(WIDTH)
+    displayGrid(4, 8, 24)
     // drawReturnGlyph(cursor, WIDTH)
     // drawReturnShape(cursor, WIDTH)
     drawReturnHybrid(cursor, WIDTH)
@@ -35,7 +35,9 @@ function scene_return() {
 
 function drawReturnHybrid(cursor, w) {
     /* draw return character with a combination of beginShape and triangle */
-    stroke(0, 0, 100, 70)
+    let transparentWhite = color(0, 0, 100, 70)
+    let white = color(0, 0, 100)
+    stroke(white)
     strokeWeight(7)
     strokeJoin(ROUND)
 
@@ -48,6 +50,7 @@ function drawReturnHybrid(cursor, w) {
     const stemBottom = new p5.Vector(x+3/4*w, y-1/4*h)
     const arrowheadTip = new p5.Vector(x+w/4, y-h/4)
 
+    // fill(transparentWhite)
     triangle( /* arrowhead */
         arrowheadTip.x, arrowheadTip.y, /* point tip */
         arrowheadTip.x+r, arrowheadTip.y + r/sqrt(3),
@@ -121,24 +124,25 @@ function drawReturnShape(cursor, w) {
 
 
 /**
- * displays a 1x2 block of 4x4 grid squares per block
- * @param w the width of the grid
+ * displays an x-by-y grid of squares with side length s
+ * @param s the width of a grid square
+ * @param x rows
+ * @param y columns
  */
-function display1x2Grid(w) {
-    /* base: 4x4 grid in each square; draw 1x2 grid */
+function displayGrid(x, y, s) {
     stroke(0, 0, 100, 30)
     strokeWeight(0.5)
 
     /* horizontal grid lines */
-    for (let i=0; i<9; i++) {
-        let verticalOffset = i * w/4
-        line(0, -verticalOffset, w,-verticalOffset)
+    for (let i=0; i<=y; i++) {
+        let verticalOffset = i * s
+        line(0, -verticalOffset, x*s,-verticalOffset)
     }
 
     /* vertical grid lines */
-    for (let i=0; i<5; i++) {
-        let horizontalOffset = i * w/4
-        line(horizontalOffset, 0, horizontalOffset, -2*w)
+    for (let i=0; i<=x; i++) {
+        let horizontalOffset = i * s
+        line(horizontalOffset, 0, horizontalOffset, -y*s)
     }
 }
 
@@ -159,6 +163,7 @@ function setup() {
 
     scene_return()
     displayDebugCorner()
+    noLoop()
 }
 
 
